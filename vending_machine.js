@@ -7,7 +7,7 @@ const rl = readline.createInterface({
 
 function question(theQuestion) {
     return new Promise(resolve => rl.question(theQuestion, answ => resolve(answ)))
-} //função assincrona
+} 
 
 let coins = [
     {
@@ -56,12 +56,7 @@ function isCoin(value) {
 
     var index = coins.findIndex(val => val.value == value)
 
-    if (index >= 0) {
-        return true
-    }
-
-    return false;
-
+    let result = (index >= 0) ? true : false; return result
 }
 
 function addCoins(value, totalCoins) {
@@ -69,7 +64,6 @@ function addCoins(value, totalCoins) {
     console.log('Aceitamos moedas de: 0.01, 0.05, 0.10, 0.50 and 1.00')
 
     let coin = parseFloat(value)
-
 
     let index = coins.findIndex(val => val.value == coin)
 
@@ -79,7 +73,7 @@ function addCoins(value, totalCoins) {
         return totalCoins
     }
     else {
-        console.log("erro")
+        console.log("vefirique o valor inserido")
         return
     }
 }
@@ -88,11 +82,7 @@ function isProduto(product) {
 
     let index = products.findIndex((val) => val.name == product)
 
-    if(index >= 0) {
-        return true
-    }
-
-    return false
+    let result = (index >= 0) ? true : false; return result 
 
 }
 
@@ -102,17 +92,18 @@ function buyProduct(product, totalCoins) {
     let index = products.findIndex((val) => val.name == product && val.price <= totalCoins)
 
     if (index >= 0) {
+
         let charge = products.filter((item) => {
             return item.name == product
         }).map((item) => {
             totalCoins -= item.price
             return totalCoins
         })
+        console.log(`Obrigado pela preferência, seu troco é: ${charge}`)
 
-        console.log(`Seu troco é: ${charge}`)
     }
     else {
-        console.log("Pruduto inexistente/dinheiro insuficiente")
+        console.log("Produto inexistente/dinheiro insuficiente")
     }
 
 }
@@ -122,48 +113,14 @@ async function main() {
     while (true) {
 
         let option = await question("Insert coins or buy products: ")
-        if(isCoin(option)) {
+        if (isCoin(option)) {
             totalCoins = addCoins(option, totalCoins)
         }
         if (isProduto(option)) {
             buyProduct(option, totalCoins)
+            break
         }
-
-
     }
 }
 
 main()
-
-
-
-
-
-
-
-
-
-
-
-/* leitor.question("Digite o nome do produto desejado: ", function (produto) {
-    let trocoTotal = produtos.filter(function (item) {
-        return item.nome == produto
-    }).map(function (item) {
-        let troco = dinheiro - item.preco
-        return troco
-    })
-
-    console.log(trocoTotal)
-});
- */
-
-
-
-/* let produtosComReajuste = produtos.map(function (item) {
-    return {
-        nome: item.nome,
-        preco: item.preco * 1.15
-    }
-})
-
-console.log(Number(trocoTotal)) */
