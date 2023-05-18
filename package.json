@@ -1,0 +1,28 @@
+{
+  "name": "vending_machine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "vending_machine.js",
+  "scripts": {
+    "dev": "tsx ./main",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Franklyn-Sancho/maquina_vendas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Franklyn-Sancho/maquina_vendas/issues"
+  },
+  "homepage": "https://github.com/Franklyn-Sancho/maquina_vendas#readme",
+  "devDependencies": {
+    "@types/node": "^20.2.1",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "tsx": "^3.12.7"
+  }
+}

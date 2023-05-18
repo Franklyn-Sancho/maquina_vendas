@@ -1,126 +1,52 @@
-const readline = require('readline');
-
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-function question(theQuestion) {
-    return new Promise(resolve => rl.question(theQuestion, answ => resolve(answ)))
-} 
-
-let coins = [
-    {
-        name: "5¢",
-        value: 0.05
-    },
-    {
-        name: "10¢",
-        value: 0.10
-    },
-    {
-        name: "25¢",
-        value: 0.25
-    },
-    {
-        name: "50¢",
-        value: 0.50
-    },
-    {
-        name: "$1",
-        value: 1.00
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VendingMachine = void 0;
+var VendingMachine = /** @class */ (function () {
+    function VendingMachine(coins, products) {
+        this.totalCoins = 0;
+        this.coins = coins;
+        this.products = products;
     }
-]
-
-
-let products = [
-    {
-        name: "chocolate",
-        price: 2.00
-    },
-    {
-        name: "coke",
-        price: 1.50
-    },
-    {
-        name: "pipoca",
-        price: 5.00
-    }
-]
-
-let totalCoins = 0;
-
-
-
-function isCoin(value) {
-
-    var index = coins.findIndex(val => val.value == value)
-
-    let result = (index >= 0) ? true : false; return result
-}
-
-function addCoins(value, totalCoins) {
-
-    console.log('Aceitamos moedas de: 0.01, 0.05, 0.10, 0.50 and 1.00')
-
-    let coin = parseFloat(value)
-
-    let index = coins.findIndex(val => val.value == coin)
-
-    if (index >= 0) {
-        totalCoins += coin
-        console.log(`Você inseriu ${value} e seu saldo é: ${totalCoins}`)
-        return totalCoins
-    }
-    else {
-        console.log("vefirique o valor inserido")
-        return
-    }
-}
-
-function isProduto(product) {
-
-    let index = products.findIndex((val) => val.name == product)
-
-    let result = (index >= 0) ? true : false; return result 
-
-}
-
-function buyProduct(product, totalCoins) {
-
-
-    let index = products.findIndex((val) => val.name == product && val.price <= totalCoins)
-
-    if (index >= 0) {
-
-        let charge = products.filter((item) => {
-            return item.name == product
-        }).map((item) => {
-            totalCoins -= item.price
-            return totalCoins
-        })
-        console.log(`Obrigado pela preferência, seu troco é: ${charge}`)
-
-    }
-    else {
-        console.log("Produto inexistente/dinheiro insuficiente")
-    }
-
-}
-
-async function main() {
-
-    while (true) {
-
-        let option = await question("Insert coins or buy products: ")
-        if (isCoin(option)) {
-            totalCoins = addCoins(option, totalCoins)
+    VendingMachine.prototype.isCoin = function (value) {
+        var coin = parseFloat(value);
+        var index = this.coins.findIndex(function (val) { return val.value == coin; });
+        return index >= 0;
+    };
+    VendingMachine.prototype.addCoins = function (value) {
+        console.log("Aceitamos moedas de: 0.01, 0.05, 0.10, 0.50 and 1.00");
+        var coin = parseFloat(value);
+        var index = this.coins.findIndex(function (val) { return val.value == coin; });
+        if (index >= 0) {
+            this.totalCoins += coin;
+            console.log("Voc\u00EA inseriu ".concat(value, " e seu saldo \u00E9: ").concat(this.totalCoins));
         }
-        if (isProduto(option)) {
-            buyProduct(option, totalCoins)
-            break
+        else {
+            console.log("vefirique o valor inserido");
+            return;
         }
-    }
-}
-
-main()
+    };
+    VendingMachine.prototype.isProduto = function (product) {
+        var index = this.products.findIndex(function (val) { return val.name == product; });
+        return index >= 0;
+    };
+    VendingMachine.prototype.buyProduct = function (product) {
+        var _this = this;
+        var index = this.products.findIndex(function (val) { return val.name == product && val.price <= _this.totalCoins; });
+        if (index >= 0) {
+            var charge = this.products
+                .filter(function (item) {
+                return item.name == product;
+            })
+                .map(function (item) {
+                _this.totalCoins -= item.price;
+                return _this.totalCoins;
+            });
+            console.log("Obrigado pela prefer\u00EAncia, seu troco \u00E9: ".concat(charge));
+        }
+        else {
+            console.log("Produto inexistente/dinheiro insuficiente");
+        }
+    };
+    return VendingMachine;
+}());
+exports.VendingMachine = VendingMachine;
