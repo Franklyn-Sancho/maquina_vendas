@@ -21,9 +21,7 @@ export class VendingMachine {
   isCoin(value: string): boolean {
     let coin = parseFloat(value);
 
-    var index = this.coins.findIndex((val) => val.value == coin);
-
-    return index >= 0;
+    return this.coins.some((val) => val.value === coin);
   }
 
   addCoins(value: string): void {
@@ -31,9 +29,7 @@ export class VendingMachine {
 
     let coin = parseFloat(value);
 
-    let index = this.coins.findIndex((val) => val.value == coin);
-
-    if (index >= 0) {
+    if (this.isCoin(value)) {
       this.totalCoins += coin;
       console.log(`Você inseriu ${value} e seu saldo é: ${this.totalCoins}`);
     } else {
@@ -43,25 +39,17 @@ export class VendingMachine {
   }
 
   isProduto(product: string): boolean {
-    let index = this.products.findIndex((val) => val.name == product);
-
-    return index >= 0;
+    return this.products.some((val) => val.name == product);
   }
 
   buyProduct(product: string): void {
-    let index = this.products.findIndex(
+    const item = this.products.find(
       (val) => val.name == product && val.price <= this.totalCoins
     );
 
-    if (index >= 0) {
-      let charge = this.products
-        .filter((item) => {
-          return item.name == product;
-        })
-        .map((item) => {
-          this.totalCoins -= item.price;
-          return this.totalCoins;
-        });
+    if (item) {
+      const charge = this.totalCoins - item.price;
+      this.totalCoins = charge;
       console.log(`Obrigado pela preferência, seu troco é: ${charge}`);
     } else {
       console.log("Produto inexistente/dinheiro insuficiente");

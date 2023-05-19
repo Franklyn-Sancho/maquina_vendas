@@ -1,5 +1,7 @@
 import * as readline from "readline";
-import { Coin, Product, VendingMachine } from "./vending_machine";
+import { VendingMachine } from "./vending_machine";
+import { coins, products } from "./model";
+
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -13,48 +15,14 @@ function question(theQuestion: string) {
 }
 
 async function main() {
-  const coins: Coin[] = [
-    {
-      name: "5¢",
-      value: 0.05,
-    },
-    {
-      name: "10¢",
-      value: 0.1,
-    },
-    {
-      name: "25¢",
-      value: 0.25,
-    },
-    {
-      name: "50¢",
-      value: 0.5,
-    },
-    {
-      name: "$1",
-      value: 1.0,
-    },
-  ];
-
-  const products: Product[] = [
-    {
-      name: "chocolate",
-      price: 2.0,
-    },
-    {
-      name: "coke",
-      price: 1.5,
-    },
-    {
-      name: "pipoca",
-      price: 5.0,
-    },
-  ];
 
   const vendingMachine = new VendingMachine(coins, products);
 
-  while (true) {
-    let option: any = await question("Insert coins or buy products: ");
+  let option: string
+
+  do {
+    option = (await question("Insert coins or buy product: ")) as string
+    option = option.toLowerCase()
     if (vendingMachine.isCoin(option)) {
       vendingMachine.addCoins(option);
     }
@@ -62,11 +30,8 @@ async function main() {
       vendingMachine.buyProduct(option);
       break;
     }
-  }
+  } while (!vendingMachine.isProduto(option))
 }
 
 main();
 
-let coins = [];
-
-let products = [];
